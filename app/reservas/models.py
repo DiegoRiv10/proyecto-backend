@@ -19,3 +19,7 @@ class Reserva(Base):
     estado = Column(String(20), default="confirmada", nullable=False)
 
     cancha = relationship("Cancha", back_populates="reservas")
+    pago = relationship(
+        "Pago", back_populates="reserva", uselist=False,
+        cascade="all, delete-orphan",
+    )

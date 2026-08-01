@@ -84,6 +84,15 @@ Una vez levantado, la API queda disponible en:
 `id`, `cancha_id`, `nombre_cliente`, `email_cliente`, `fecha`,
 `hora_inicio`, `hora_fin`, `estado`. Cada reserva pertenece a una cancha.
 
+### Pago
+`id`, `reserva_id`, `monto`, `metodo`, `estado`, `fecha_pago`.
+Cada pago pertenece a una reserva (relación uno a uno).
+
+**Regla de negocio:** el `monto` del pago **no lo envía el cliente**: la API lo
+calcula automáticamente multiplicando las horas reservadas por el precio por hora
+de la cancha. Además, una reserva no puede pagarse dos veces ni pagarse si está
+cancelada.
+
 ---
 
 ## Endpoints principales
@@ -101,6 +110,11 @@ Una vez levantado, la API queda disponible en:
 | PUT | `/api/v1/reservas/{id}` | Actualizar una reserva |
 | PATCH | `/api/v1/reservas/{id}` | Cambiar el estado de una reserva |
 | DELETE | `/api/v1/reservas/{id}` | Eliminar una reserva |
+| POST | `/api/v1/pagos/` | Registrar el pago de una reserva (monto automático) |
+| GET | `/api/v1/pagos/` | Listar pagos (filtros: metodo, estado) |
+| GET | `/api/v1/pagos/{id}` | Obtener un pago |
+| PATCH | `/api/v1/pagos/{id}` | Actualizar método o estado de un pago |
+| DELETE | `/api/v1/pagos/{id}` | Eliminar un pago |
 
 ---
 

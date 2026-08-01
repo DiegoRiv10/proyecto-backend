@@ -4,6 +4,7 @@ from fastapi import FastAPI
 
 from app.canchas.routes import router as canchas_router
 from app.errors import AppError, app_error_handler
+from app.pagos.routes import router as pagos_router
 from app.reservas.routes import router as reservas_router
 
 app = FastAPI(
@@ -16,6 +17,7 @@ app.add_exception_handler(AppError, app_error_handler)
 
 app.include_router(canchas_router)
 app.include_router(reservas_router)
+app.include_router(pagos_router)
 
 
 @app.get("/", tags=["default"])

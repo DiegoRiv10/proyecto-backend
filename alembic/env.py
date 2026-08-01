@@ -8,6 +8,7 @@ from app.database import Base
 # Importar los modelos para que Alembic los detecte
 from app.canchas import models as _canchas  # noqa: F401
 from app.reservas import models as _reservas  # noqa: F401
+from app.pagos import models as _pagos  # noqa: F401
 
 config = context.config
 
