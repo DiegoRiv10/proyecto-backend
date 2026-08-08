@@ -38,6 +38,24 @@ canchapp/
 └── README.md
 ```
 
+## Validaciones y reglas de negocio
+
+- **Cancha:** el nombre no puede repetirse; el precio debe ser mayor a 0.
+- **Reserva:** la cancha debe existir y estar disponible; la hora de fin debe ser
+  posterior a la de inicio; no puede haber dos reservas encimadas en la misma
+  cancha y horario; el estado debe ser válido (confirmada, cancelada, completada).
+- **Pago:** el monto se calcula automáticamente (horas × precio de la cancha);
+  una reserva no puede pagarse dos veces ni pagarse si está cancelada; el método
+  debe ser efectivo, tarjeta o transferencia.
+
+Todos los errores se devuelven con un formato consistente
+(`{"success": false, "error": "mensaje"}`) y el código HTTP correcto.
+
+## Endpoints de utilidad
+
+- `GET /` — mensaje de bienvenida.
+- `GET /health` — verificación de estado (health check) para Docker.
+
 ---
 
 ## Instalación y ejecución

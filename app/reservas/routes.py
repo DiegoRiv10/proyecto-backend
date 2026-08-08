@@ -10,13 +10,27 @@ from . import models, schemas
 
 router = APIRouter(prefix="/api/v1/reservas", tags=["Reservas"])
 
+ESTADOS_VALIDOS = {"confirmada", "cancelada", "completada"}
+
 
 def _validar_reserva(db: Session, data, reserva_id: int | None = None):
-    """Valida que la cancha exista, que las horas tengan sentido y que no
-    haya empalme con otra reserva activa de la misma cancha."""
+    """Valida que la cancha exista y esté disponible, que las horas tengan
+    sentido, que el estado sea válido y que no haya empalme con otra reserva
+    activa de la misma cancha."""
     cancha = db.get(cancha_models.Cancha, data.cancha_id)
     if not cancha:
         raise AppError(404, "La cancha indicada no existe")
+
+    # Regla de negocio: no se puede reservar una cancha no disponible
+    if not cancha.disponible:
+        raise AppError(400, "La cancha no está disponible para reservar")
+
+    # Validación: el estado debe ser uno de los permitidos
+    if data.estado not in ESTADOS_VALIDOS:
+        raise AppError(
+            400,
+            f"Estado inválido. Usa uno de: {', '.join(sorted(ESTADOS_VALIDOS))}",
+        )
 
     if data.hora_fin <= data.hora_inicio:
         raise AppError(400, "La hora de fin debe ser posterior a la hora de inicio")
